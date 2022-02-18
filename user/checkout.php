@@ -166,7 +166,26 @@ if (isset($_POST["submit"])) {
                         </div>
                     </div>
                     <div class="col-12 col-lg-4">
+                        <div class="cart-summary">
+                            <h5>Metode Pembayaran</h5>
 
+                            <div class="payment-method">
+                                <!-- Cash on delivery -->
+                                <div class="custom-control custom-checkbox mr-sm-2">
+                                    <input type="checkbox" class="custom-control-input" id="cod" checked>
+                                    <label class="custom-control-label" for="cod">Cash on Delivery</label>
+                                </div>
+                                <!-- Paypal -->
+                                <div class="custom-control custom-checkbox mr-sm-2">
+                                    <input type="checkbox" class="custom-control-input" id="paypal">
+                                    <label class="custom-control-label" for="paypal">Paypal <img class="ml-15" src="img/core-img/paypal.png" alt=""></label>
+                                </div>
+                            </div>
+
+                            <div class="cart-btn mt-100">
+                                <a href="#" class="btn amado-btn w-100">Checkout</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

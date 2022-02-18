@@ -1,11 +1,20 @@
 <?php
 session_start();
 include_once "connect.php";
-include_once "fcheckout.php";
+include_once "fbeli.php";
 $uid = $_SESSION["uid"];
 $query = mysqli_query($connect, "SELECT o.user_id, p.total_pembelian, p.tanggal, o.nama_kota, o.tarif, o.estimasi, o.nama_lengkap, o.alamat, o.no_hp FROM pembelian AS p INNER JOIN ongkir AS o ON o.user_id=p.id_ongkir WHERE p.user_id=$uid");
 $nota = mysqli_fetch_assoc($query);
 $cart = barang("SELECT b.nama, c.qty, b.image, b.harga, c.id, b.stok FROM user AS u INNER JOIN cart AS c ON c.user_id=u.id INNER JOIN barang AS b ON b.id=c.id_produk WHERE u.id='$uid'");
+$tt = date("dmys");
+$id_transaksi = $tt . $uid;
+if (isset($_POST["submit"])) {
+    if (tambahsold($_POST) > 0) {
+        echo "<script>alert('data berhasil ditambahkan');</script> ";
+    } else {
+        echo "<script>alert('data gagal ditambahkan');</script> ";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -83,47 +92,61 @@ $cart = barang("SELECT b.nama, c.qty, b.image, b.harga, c.id, b.stok FROM user A
                                     <td>: <?= $nota["nama_kota"] ?></td>
                                 </tr>
                             </table>
-                            <table class="table">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th scope="col">No</th>
-                                        <th scope="col">Nama</th>
-                                        <th scope="col">Jumlah</th>
-                                        <th scope="col">Sub Harga</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    $a = 1;
-                                    ?>
-                                    <?php
-                                    foreach ($cart as $data) :
-                                    ?>
-                                        <?php
-                                        $total = $data["qty"] * $data["harga"];
-                                        ?>
+                            <form action="" method="post">
+                                <table class="table">
+                                    <thead class="thead-light">
                                         <tr>
-                                            <th scope="row"><?= $a ?></th>
-                                            <td><?= $data["nama"] ?></td>
-                                            <td><?= $data["qty"] ?></td>
-                                            <td>Rp <?= number_format($total); ?></td>
+                                            <th scope="col">No</th>
+                                            <th scope="col">Nama</th>
+                                            <th scope="col">Jumlah</th>
+                                            <th scope="col">Sub Harga</th>
                                         </tr>
+                                    </thead>
+                                    <tbody>
                                         <?php
-                                        $a++;
+                                        $a = 1;
                                         ?>
-                                    <?php
-                                    endforeach;
-                                    ?>
-                                    <tr class="">
-                                        <th colspan="3">Ongkir</th>
-                                        <th>Rp <?= number_format($nota["tarif"]);  ?></th>
-                                    </tr>
-                                    <tr class="">
-                                        <th colspan="3">Total</th>
-                                        <th>Rp <?= number_format($nota["total_pembelian"]);  ?></th>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                        <?php
+                                        foreach ($cart as $data) :
+                                        ?>
+                                            <?php
+                                            $total = $data["qty"] * $data["harga"];
+                                            ?>
+                                            <tr>
+                                                <th scope="row"><?= $a ?></th>
+
+                                                <input type="hidden" value="<?= $uid ?>" name="userid">
+                                                <input type="hidden" value="proses" name="status">
+                                                <input type="hidden" value="<?= $id_transaksi ?>" name="transaksi">
+                                                <input type="hidden" value="<?= $data["nama"] ?>" name="produk[]">
+                                                <input type="hidden" value="<?= $data["qty"] ?>" name="stokdibeli[]">
+                                                <td><?= $data["nama"] ?></td>
+                                                <td><?= $data["qty"] ?></td>
+                                                <td>Rp <?= number_format($total); ?></td>
+                                            </tr>
+                                            <?php
+                                            $a++;
+                                            ?>
+                                        <?php
+                                        endforeach;
+                                        ?>
+                                        <tr class="">
+                                            <th colspan="3">Ongkir</th>
+                                            <th>Rp <?= number_format($nota["tarif"]);  ?></th>
+                                        </tr>
+                                        <tr class="">
+                                            <th colspan="3">Total</th>
+                                            <th>Rp <?= number_format($nota["total_pembelian"]);  ?></th>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">
+                                                <button type="submit" class="amado-btn" name="submit">Submit</button>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -131,7 +154,6 @@ $cart = barang("SELECT b.nama, c.qty, b.image, b.harga, c.id, b.stok FROM user A
         </div>
 
     </div>
-
 
     </div>
     <!-- ##### Main Content Wrapper End ##### -->
