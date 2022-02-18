@@ -114,13 +114,13 @@ $cart = barang("SELECT b.nama, c.qty, b.image, b.harga, c.id, b.stok FROM user A
                                     <?php
                                     endforeach;
                                     ?>
-                                    <tr class="bg-info text-white">
-                                        <td colspan="3">Ongkir</td>
-                                        <td>Rp <?= number_format($nota["tarif"]);  ?></td>
+                                    <tr class="">
+                                        <th colspan="3">Ongkir</th>
+                                        <th>Rp <?= number_format($nota["tarif"]);  ?></th>
                                     </tr>
-                                    <tr class="bg-info text-white">
-                                        <td colspan="3">Total</td>
-                                        <td>Rp <?= number_format($nota["total_pembelian"]);  ?></td>
+                                    <tr class="">
+                                        <th colspan="3">Total</th>
+                                        <th>Rp <?= number_format($nota["total_pembelian"]);  ?></th>
                                     </tr>
                                 </tbody>
                             </table>
