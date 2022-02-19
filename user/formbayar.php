@@ -3,8 +3,16 @@ session_start();
 include_once "connect.php";
 include_once "fbayartk.php";
 $uid = $_SESSION["uid"];
+$tgl = date("dmys");
+$transaksi = $tgl . $uid;
+$query = mysqli_query($connect, "SELECT o.user_id, p.total_pembelian, p.tanggal, o.nama_kota, o.tarif, o.estimasi, o.nama_lengkap, o.alamat, o.no_hp FROM pembelian AS p INNER JOIN ongkir AS o ON o.user_id=p.id_ongkir WHERE p.user_id=$uid");
+$nota = mysqli_fetch_assoc($query);
+$alamat = $nota["alamat"] . $nota["nama_kota"];
+$cart = barang("SELECT b.nama, c.qty, b.image, b.harga, b.id, b.stok FROM user AS u INNER JOIN cart AS c ON c.user_id=u.id INNER JOIN barang AS b ON b.id=c.id_produk WHERE u.id='$uid'");
+$stok = barang("SELECT * FROM barang AS b INNER JOIN cart AS c ON b.id=c.id_produk WHERE c.user_id=$uid");
+
 if (isset($_POST["submit"])) {
-    if (tambahsold($_POST) > 0) {
+    if (tambahbukti($_POST) > 0 & tambah($_POST) > 0) {
         echo "<script>alert('data berhasil ditambahkan');</script> ";
     } else {
         echo "<script>alert('data gagal ditambahkan');</script> ";
@@ -72,10 +80,26 @@ if (isset($_POST["submit"])) {
                             <div class="cart-title text-center">
                                 <h2>Form Pembayaran</h2>
                             </div>
-                            <form method="POST">
+                            <form method="POST" enctype="multipart/form-data">
                                 <div class="row">
                                     <div class="col-md-12 mb-3">
-                                        <input type="hidden" class="form-control" id="first_name" value="<?= $uid ?>" placeholder="id" name="userid">
+                                        <input type="hidden" class="form-control" id="userid" value="<?= $uid ?>" placeholder="id" name="userid">
+                                        <input type="hidden" name="status" value="sudah dibayar">
+                                        <input type="hidden" value="<?= $alamat ?>" name="alamat">
+                                        <?php
+                                        foreach ($stok as $qty) :
+                                        ?>
+                                            <input type="text" name="sbelum[]" id="sbelum" value="<?= $qty["stok"] ?>">
+                                        <?php
+                                        endforeach;
+                                        ?>
+                                        <?php
+                                        foreach ($cart as $data) :
+                                        ?>
+                                            <input type="text" value="<?= $data["id"] ?>" name="produk_id[]">
+                                            <input type="hidden" value="<?= $data["nama"] ?>" name="produk[]">
+                                            <input type="hidden" value="<?= $data["qty"] ?>" name="stokdibeli[]">
+                                        <?php endforeach; ?>
                                     </div>
                                     <style>
                                         .halo .w-100 {

@@ -10,7 +10,9 @@ $tt = date("dmys");
 $id_transaksi = $tt . $uid;
 if (isset($_POST["submit"])) {
     if (tambahsold($_POST) > 0) {
-        echo "<script>alert('data berhasil ditambahkan');</script> ";
+        echo "<script>alert('data berhasil ditambahkan');
+        document.location.href = 'formbayar.php';</script> 
+        ";
     } else {
         echo "<script>alert('data gagal ditambahkan');</script> ";
     }
@@ -25,7 +27,6 @@ if (isset($_POST["submit"])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-
     <!-- Title  -->
     <title>Amado - Furniture Ecommerce Template | Shop</title>
 
