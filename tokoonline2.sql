@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 18, 2022 at 02:07 AM
+-- Generation Time: Feb 21, 2022 at 05:29 AM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 8.0.8
 
@@ -43,13 +43,45 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`id`, `nama`, `stok`, `harga`, `kategori_id`, `image`, `detail`, `berat`) VALUES
-(30, 'Pocophone X3 NFC', 88, 4000000, '2', '61f7543fcaa7b.png', 'ditawarkan oleh prosesor baru. Prosesor Qualcomm® Snapdragon™ 732G menawarkan kapasitas pemrosesan grafis yang kuat dan kemampuan komputasi AI yang canggih. Teknologi proses 8nm dan chip octa-core yang membantu mencapai kecepatan jam 2,3GHz.', 2500),
-(31, 'Mi Band 5', 78, 400000, '9', '61f78aa6876ef.png', 'Baterai 500 mAh, tahan air. Bisa tahan 10 hari pemakaian normal. Tersedia berbagai warna', 1200),
+(30, 'Pocophone X3 NFC', 74, 4000000, '2', '61f7543fcaa7b.png', 'ditawarkan oleh prosesor baru. Prosesor Qualcomm® Snapdragon™ 732G menawarkan kapasitas pemrosesan grafis yang kuat dan kemampuan komputasi AI yang canggih. Teknologi proses 8nm dan chip octa-core yang membantu mencapai kecepatan jam 2,3GHz.', 2500),
+(31, 'Mi Band 5', 74, 400000, '9', '61f78aa6876ef.png', 'Baterai 500 mAh, tahan air. Bisa tahan 10 hari pemakaian normal. Tersedia berbagai warna', 1200),
 (32, 'Canon', 67, 3500000, '7', '61f78c64beb65.png', 'Sensor APS-C CMOS 24,1 megapiksel+ perekaman video 4K 45 titik AF semua tipe silang (jendela bidik) dan Dual Pixel CMOS AF (Live View)', 3000),
-(34, 'Lenovo Legion 5', 53, 19000000, '3', '61fa1ee09b2fa.png', 'Engineered to deliver devastation in and out of the arena, the Legion 5 Pro deploys AMD Ryzen™ processing and NVIDIA® GeForce RTX™ graphics to dish out high-resolution gaming. The world’s first 16&amp;quot; QHD gaming laptop with up to 165Hz refresh sets up a “winning zone” that gives you an extra e', 1500),
-(35, 'Pop It', 129, 20000, '6', '61fccbe0b0ec4.png', 'Ini adalah mainan yang viral pada masanya', 4500),
-(36, 'Televisi Panasonic', 55, 3500000, '3', '61fcead9bd166.png', 'Mulai dari gambar yang semarak hingga gambar yang jernih - Anda akan menikmati detail dan tekstur yang halus, bahkan dalam area gambar yang datar. Clear Resolution Enhancer menskala gambar resolusi rendah hingga resolusi Full HD tanpa memperkenalkan noise gambar tambahan. Melakukannya dengan mengura', 9000),
-(37, 'Panci Annons', 91, 99900, '10', '61fdeb89a87ef.png', 'Panci dengan penutup, kaca/baja tahan karat, 2.8 l', 7000);
+(34, 'Lenovo Legion 5', 48, 19000000, '3', '61fa1ee09b2fa.png', 'Engineered to deliver devastation in and out of the arena, the Legion 5 Pro deploys AMD Ryzen™ processing and NVIDIA® GeForce RTX™ graphics to dish out high-resolution gaming. The world’s first 16&amp;quot; QHD gaming laptop with up to 165Hz refresh sets up a “winning zone” that gives you an extra e', 1500),
+(35, 'Pop It', 119, 20000, '6', '61fccbe0b0ec4.png', 'Ini adalah mainan yang viral pada masanya', 200),
+(36, 'Televisi Panasonic', 55, 3500000, '3', '61fcead9bd166.png', 'Mulai dari gambar yang semarak hingga gambar yang jernih - Anda akan menikmati detail dan tekstur yang halus, bahkan dalam area gambar yang datar. Clear Resolution Enhancer menskala gambar resolusi rendah hingga resolusi Full HD tanpa memperkenalkan noise gambar tambahan. Melakukannya dengan mengura', 2100),
+(37, 'Panci Annons', 91, 99900, '10', '61fdeb89a87ef.png', 'Panci dengan penutup, kaca/baja tahan karat, 2.8 l', 2100);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `buktipembayaran`
+--
+
+CREATE TABLE `buktipembayaran` (
+  `id_pembayaran` int(10) NOT NULL,
+  `iduser` int(10) NOT NULL,
+  `gambar` varchar(100) NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `produk` varchar(50) NOT NULL,
+  `qty` int(10) NOT NULL,
+  `alamat` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `buktipembayaran`
+--
+
+INSERT INTO `buktipembayaran` (`id_pembayaran`, `iduser`, `gambar`, `status`, `produk`, `qty`, `alamat`) VALUES
+(128, 6, '62130745a038f.png', 'sudah dibayar', 'Pocophone X3 NFC', 3, 'Banjarmlati LengkongKabupaten Kulon Progo'),
+(129, 6, '62130745a038f.png', 'sudah dibayar', 'Pop It', 4, 'Banjarmlati LengkongKabupaten Kulon Progo'),
+(130, 6, '62130745a038f.png', 'sudah dibayar', 'Lenovo Legion 5', 1, 'Banjarmlati LengkongKabupaten Kulon Progo'),
+(131, 6, '621309b0bc323.png', 'sudah dibayar', 'Pocophone X3 NFC', 3, 'iKota Jambi'),
+(132, 6, '62130a55b64f8.png', 'sudah dibayar', 'Lenovo Legion 5', 3, 'iKabupaten Garut'),
+(133, 6, '62130c462d1f2.png', 'sudah dibayar', 'Pocophone X3 NFC', 2, 'iKabupaten Malinau'),
+(134, 6, '62130c876d78b.png', 'sudah dibayar', 'Mi Band 5', 2, 'iKabupaten Mojokerto'),
+(135, 6, '621310ca1a92d.png', 'sudah dibayar', 'Mi Band 5', 2, ' Jln. SudirmanKota Denpasar'),
+(136, 6, '621310ca1a92d.png', 'sudah dibayar', 'Pop It', 2, ' Jln. SudirmanKota Denpasar'),
+(137, 8, '621311bf7ff1d.png', 'sudah dibayar', 'Pocophone X3 NFC', 3, ' Jln pahlawanKota Banjarbaru');
 
 -- --------------------------------------------------------
 
@@ -63,15 +95,6 @@ CREATE TABLE `cart` (
   `id_produk` int(11) NOT NULL,
   `qty` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `cart`
---
-
-INSERT INTO `cart` (`id`, `user_id`, `id_produk`, `qty`) VALUES
-(119, 8, 30, 3),
-(120, 6, 30, 3),
-(121, 6, 35, 4);
 
 -- --------------------------------------------------------
 
@@ -112,15 +135,9 @@ CREATE TABLE `ongkir` (
   `nama_provinsi` varchar(50) NOT NULL,
   `nama_kota` varchar(50) NOT NULL,
   `tarif` int(30) NOT NULL,
-  `estimasi` varchar(10) NOT NULL
+  `estimasi` varchar(10) NOT NULL,
+  `uid` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `ongkir`
---
-
-INSERT INTO `ongkir` (`id_ongkir`, `user_id`, `nama_lengkap`, `alamat`, `no_hp`, `nama_provinsi`, `nama_kota`, `tarif`, `estimasi`) VALUES
-(28, 160220226, 'Marcel Dwi Astika', 'i', '0895339390753', 'Jawa Timur', 'Kabupaten Mojokerto', 260000, '1-1 hari');
 
 -- --------------------------------------------------------
 
@@ -141,7 +158,10 @@ CREATE TABLE `pembelian` (
 --
 
 INSERT INTO `pembelian` (`id_pembelian`, `user_id`, `id_ongkir`, `tanggal`, `total_pembelian`) VALUES
-(17, 6, 160220226, 'Wed Feb 2022', 12340000);
+(33, 6, 210220226, 'Mon Feb 2022', 8350000),
+(34, 6, 210220226, 'Mon Feb 2022', 830000),
+(35, 6, 210220226, 'Mon Feb 2022', 954000),
+(36, 8, 210220228, 'Mon Feb 2022', 12464000);
 
 -- --------------------------------------------------------
 
@@ -151,9 +171,9 @@ INSERT INTO `pembelian` (`id_pembelian`, `user_id`, `id_ongkir`, `tanggal`, `tot
 
 CREATE TABLE `sold` (
   `id` int(11) NOT NULL,
-  `id_transaksi` int(11) NOT NULL,
+  `id_transaksi` int(30) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
+  `product_id` varchar(40) NOT NULL,
   `stok` int(11) NOT NULL,
   `status` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -219,6 +239,12 @@ ALTER TABLE `barang`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `buktipembayaran`
+--
+ALTER TABLE `buktipembayaran`
+  ADD PRIMARY KEY (`id_pembayaran`);
+
+--
 -- Indexes for table `cart`
 --
 ALTER TABLE `cart`
@@ -271,10 +297,16 @@ ALTER TABLE `barang`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
+-- AUTO_INCREMENT for table `buktipembayaran`
+--
+ALTER TABLE `buktipembayaran`
+  MODIFY `id_pembayaran` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=138;
+
+--
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
 
 --
 -- AUTO_INCREMENT for table `kategori`
@@ -286,19 +318,19 @@ ALTER TABLE `kategori`
 -- AUTO_INCREMENT for table `ongkir`
 --
 ALTER TABLE `ongkir`
-  MODIFY `id_ongkir` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id_ongkir` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `pembelian`
 --
 ALTER TABLE `pembelian`
-  MODIFY `id_pembelian` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_pembelian` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `sold`
 --
 ALTER TABLE `sold`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `stok`
