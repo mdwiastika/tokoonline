@@ -13,6 +13,7 @@ function barang($query)
 function tambahongkir($data)
 {
     global $connect;
+    $uid = htmlspecialchars($data["uid"]);
     $idt = htmlspecialchars($data["idt"]);
     $nama = htmlspecialchars($data["namalengkap"]);
     $alamat = htmlspecialchars($data["alamat"]);
@@ -21,7 +22,7 @@ function tambahongkir($data)
     $kota = htmlspecialchars($data["tipe"] . " " . $data["distrik"]);
     $tarif = htmlspecialchars($data["ongkir"]);
     $estimasi = htmlspecialchars($data["estimasi"]) . " hari";
-    $query = "INSERT INTO ongkir VALUES ('','$idt','$nama','$alamat','$nohp','$provinsi','$kota','$tarif','$estimasi')";
+    $query = "INSERT INTO ongkir VALUES ('','$idt','$nama','$alamat','$nohp','$provinsi','$kota','$tarif','$estimasi','$uid')";
     mysqli_query($connect, $query);
     return mysqli_affected_rows($connect);
 }

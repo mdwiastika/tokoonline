@@ -54,14 +54,19 @@ function upload()
 function tambah($data)
 {
     global $connect;
+    $userid = htmlspecialchars($data["userid"]);
     $id = $data["produk_id"];
-    $sbelum = $data["sbelum"];
-    $stambah = $data["stokdibeli"];
-    $ssudah = $sbelum + $stambah;
-    $jumlah_dipilih = count($stambah);
+    $ssudah = $data["stokbaru"];
+    $jumlah_dipilih = count($id);
     for ($x = 0; $x < $jumlah_dipilih; $x++) {
-        $query1 = "UPDATE barang SET stok= '$ssudah' WHERE id= $id";
+        $query1 = "UPDATE barang SET stok= '$ssudah[$x]' WHERE id= $id[$x]";
         mysqli_query($connect, $query1);
     }
+    $query2 = "DELETE FROM cart WHERE user_id= $userid";
+    mysqli_query($connect, $query2);
+    $query3 = "DELETE FROM sold WHERE user_id= $userid";
+    mysqli_query($connect, $query3);
+    $query4 = "DELETE FROM ongkir WHERE uid= $userid";
+    mysqli_query($connect, $query4);
     return mysqli_affected_rows($connect);
 }

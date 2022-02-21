@@ -13,7 +13,8 @@ $stok = barang("SELECT * FROM barang AS b INNER JOIN cart AS c ON b.id=c.id_prod
 
 if (isset($_POST["submit"])) {
     if (tambahbukti($_POST) > 0 & tambah($_POST) > 0) {
-        echo "<script>alert('data berhasil ditambahkan');</script> ";
+        echo "<script>alert('Barang segera segera diantar');
+        document.location.href = 'cart.php';</script> ";
     } else {
         echo "<script>alert('data gagal ditambahkan');</script> ";
     }
@@ -89,16 +90,20 @@ if (isset($_POST["submit"])) {
                                         <?php
                                         foreach ($stok as $qty) :
                                         ?>
-                                            <input type="text" name="sbelum[]" id="sbelum" value="<?= $qty["stok"] ?>">
+                                            <input type="hidden" name="sbelum[]" id="sbelum" value="<?= $qty["stok"] ?>">
                                         <?php
                                         endforeach;
                                         ?>
                                         <?php
                                         foreach ($cart as $data) :
                                         ?>
-                                            <input type="text" value="<?= $data["id"] ?>" name="produk_id[]">
+                                            <input type="hidden" value="<?= $data["id"] ?>" name="produk_id[]">
                                             <input type="hidden" value="<?= $data["nama"] ?>" name="produk[]">
                                             <input type="hidden" value="<?= $data["qty"] ?>" name="stokdibeli[]">
+                                            <?php
+                                            $stokbaru = $data["stok"] - $data["qty"];
+                                            ?>
+                                            <input type="hidden" value="<?= $stokbaru ?>" name="stokbaru[]">
                                         <?php endforeach; ?>
                                     </div>
                                     <style>
