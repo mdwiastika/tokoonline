@@ -92,7 +92,6 @@ $sumj = $rowj[0];
                                 </thead>
 
                                 <tbody>
-
                                     <?php foreach ($cart as $carta) : ?>
                                         <tr>
                                             <td class=" cart_product_img">

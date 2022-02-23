@@ -5,7 +5,7 @@ include_once "fbayartk.php";
 $uid = $_SESSION["uid"];
 $tgl = date("dmys");
 $transaksi = $tgl . $uid;
-$query = mysqli_query($connect, "SELECT o.user_id, p.total_pembelian, p.tanggal, o.nama_kota, o.tarif, o.estimasi, o.nama_lengkap, o.alamat, o.no_hp FROM pembelian AS p INNER JOIN ongkir AS o ON o.user_id=p.id_ongkir WHERE p.user_id=$uid");
+$query = mysqli_query($connect, "SELECT o.user_id, p.total, p.tanggal, o.nama_kota, o.tarif, o.estimasi, o.nama_lengkap, o.alamat, o.no_hp, o.id_transaksi FROM pembelian AS p INNER JOIN ongkir AS o ON o.uid=p.user_id WHERE p.user_id=$uid");
 $nota = mysqli_fetch_assoc($query);
 $alamat = $nota["alamat"] . " " . $nota["nama_kota"];
 $cart = barang("SELECT b.nama, c.qty, b.image, b.harga, b.id, b.stok FROM user AS u INNER JOIN cart AS c ON c.user_id=u.id INNER JOIN barang AS b ON b.id=c.id_produk WHERE u.id='$uid'");
@@ -88,6 +88,7 @@ if (isset($_POST["submit"])) {
                                         <input type="hidden" class="form-control" id="userid" value="<?= $uid ?>" placeholder="id" name="userid">
                                         <input type="hidden" name="status" value="sudah dibayar">
                                         <input type="hidden" value="<?= $alamat ?>" name="alamat">
+
                                         <?php
                                         foreach ($stok as $qty) :
                                         ?>
@@ -106,6 +107,7 @@ if (isset($_POST["submit"])) {
                                             ?>
                                             <input type="hidden" value="<?= $stokbaru ?>" name="stokbaru[]">
                                         <?php endforeach; ?>
+                                        <input type="hidden" value="<?= $nota["id_transaksi"] ?>" name="idtransaksi">
                                     </div>
                                     <style>
                                         .halo .w-100 {
@@ -132,6 +134,8 @@ if (isset($_POST["submit"])) {
                                     </div>
                                     <div class="col-md-12 mb-3">
                                         <img src="../qrcode.jpeg" alt="" style="max-width: 100px; display: inline-block;">
+                                    </div>
+                                    <div>
                                     </div>
                                     <button type="submit" class="amado-btn" name="submit" style="display: inline-block;">Submit</button>
                                     <div class="col-12">

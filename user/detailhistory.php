@@ -3,9 +3,12 @@ session_start();
 include_once "connect.php";
 include_once "fbeli.php";
 $uid = $_SESSION["uid"];
-$query = mysqli_query($connect, "SELECT o.user_id, p.total, p.tanggal, o.nama_kota, o.tarif, o.estimasi, o.nama_lengkap, o.alamat, o.no_hp FROM pembelian AS p INNER JOIN ongkir AS o ON o.uid=p.user_id WHERE p.user_id=$uid");
+$query = mysqli_query($connect, "SELECT o.user_id, p.total, p.tanggal, o.nama_kota, o.tarif, o.estimasi, o.nama_lengkap, o.alamat, o.no_hp, p.ongkir FROM pembelian AS p INNER JOIN ongkir AS o ON o.user_id=p.id_ongkir WHERE p.user_id=$uid");
 $nota = mysqli_fetch_assoc($query);
-$cart = barang("SELECT b.nama, c.qty, b.image, b.harga, c.id, b.stok FROM user AS u INNER JOIN cart AS c ON c.user_id=u.id INNER JOIN barang AS b ON b.id=c.id_produk WHERE u.id='$uid'");
+
+$cart = barang("SELECT * FROM buktipembayaran AS b INNER JOIN pembelian AS p ON b.iduser=p.user_id WHERE b.iduser='$uid'");
+$query1 = mysqli_query($connect, "SELECT ongkir FROM pembelian WHERE user_id='$uid'");
+$ongkir = mysqli_fetch_assoc($query1);
 $tt = date("dmys");
 $id_transaksi = $tt . $uid;
 if (isset($_POST["submit"])) {
@@ -67,7 +70,9 @@ if (isset($_POST["submit"])) {
         <?php
         include_once "navbar.php";
         ?>
-
+        <?php
+        include_once "header.php";
+        ?>
         <!-- Header Area Start -->
         <div class="amado_product_area section-padding-100 mx-auto">
             <div class="container-fluid">
@@ -75,32 +80,15 @@ if (isset($_POST["submit"])) {
                 <div class="row">
                     <div class="col-12">
                         <div class="container card shadow overflow-hidden p-5 m-auto" style="width: 100%;">
-                            <table style="margin-bottom: 10px;">
-                                <tr>
-                                    <td>Nama</td>
-                                    <td>: <?= $nota["nama_lengkap"] ?></td>
-                                </tr>
-                                <tr>
-                                    <td>Alamat</td>
-                                    <td>: <?= $nota["alamat"] ?></td>
-                                </tr>
-                                <tr>
-                                    <td>No. Hp</td>
-                                    <td>: <?= $nota["no_hp"] ?></td>
-                                </tr>
-                                <tr>
-                                    <td>Distrik</td>
-                                    <td>: <?= $nota["nama_kota"] ?></td>
-                                </tr>
-                            </table>
-                            <form action="" method="post">
+                            <?php
+                            foreach ($cart as $data) :
+                            ?>
                                 <table class="table">
                                     <thead class="thead-light">
                                         <tr>
                                             <th scope="col">No</th>
                                             <th scope="col">Nama</th>
                                             <th scope="col">Jumlah</th>
-                                            <th scope="col">Sub Harga</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -108,42 +96,28 @@ if (isset($_POST["submit"])) {
                                         $a = 1;
                                         ?>
                                         <?php
-                                        foreach ($cart as $data) :
+                                        $subtototal = $data["total"] - $data["ongkir"];
+                                        $total = $data["qty"] * $subtototal;
                                         ?>
-                                            <?php
-                                            $total = $data["qty"] * $data["harga"];
-                                            ?>
-                                            <tr>
-                                                <th scope="row"><?= $a ?></th>
+                                        <tr>
+                                            <th scope="row"><?= $a ?></th>
 
-                                                <input type="hidden" value="<?= $uid ?>" name="userid">
-                                                <input type="hidden" value="proses" name="status">
-                                                <input type="hidden" value="<?= $id_transaksi ?>" name="transaksi">
-                                                <input type="hidden" value="<?= $data["nama"] ?>" name="produk[]">
-                                                <input type="hidden" value="<?= $data["qty"] ?>" name="stokdibeli[]">
-                                                <td><?= $data["nama"] ?></td>
-                                                <td><?= $data["qty"] ?></td>
-                                                <td>Rp <?= number_format($total); ?></td>
-                                            </tr>
-                                            <?php
-                                            $a++;
-                                            ?>
+                                            <input type="hidden" value="<?= $uid ?>" name="userid">
+                                            <td><?= $data["produk"] ?></td>
+                                            <td><?= $data["qty"] ?></td>
+                                        </tr>
                                         <?php
-                                        endforeach;
+                                        $a++;
                                         ?>
                                         <tr class="">
-                                            <th colspan="3">Ongkir</th>
-                                            <th>Rp <?= number_format($nota["tarif"]);  ?></th>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="4">
-                                                <button type="submit" class="amado-btn" name="submit">Submit</button>
-                                            </td>
-
+                                            <th colspan="2">Ongkir</th>
+                                            <th>Rp <?= number_format($ongkir["ongkir"]);  ?></th>
                                         </tr>
                                     </tbody>
                                 </table>
-                            </form>
+                            <?php
+                            endforeach;
+                            ?>
                         </div>
                     </div>
                 </div>

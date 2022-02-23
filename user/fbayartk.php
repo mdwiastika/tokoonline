@@ -16,15 +16,10 @@ function tambahbukti($data)
     global $connect;
     $userid = htmlspecialchars($data["userid"]);
     $gambar = upload();
-    $alamat = htmlspecialchars($data["alamat"]);
     $produk = $data["produk"];
-    $stokdibeli = $data["stokdibeli"];
-    $status = htmlspecialchars($data["status"]);
-    $jumlah_dipilih = count($produk);
-    for ($x = 0; $x < $jumlah_dipilih; $x++) {
-        $query = "INSERT INTO buktipembayaran VALUES ('','$userid','$gambar','$status','$produk[$x]','$stokdibeli[$x]','$alamat')";
-        mysqli_query($connect, $query);
-    }
+    $id_transaksi = $data["idtransaksi"];
+    $query2 = "UPDATE buktipembayaran SET gambar= '$gambar' WHERE id_transaksi=$id_transaksi";
+    mysqli_query($connect, $query2);
     return mysqli_affected_rows($connect);
 }
 function upload()

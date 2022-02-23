@@ -14,6 +14,7 @@ $sum = $row[0];
 $resb = mysqli_query($connect, "SELECT SUM(berat * qty) FROM user AS u INNER JOIN cart AS c ON c.user_id=u.id INNER JOIN barang AS b ON b.id=c.id_produk WHERE u.id='$uid'");
 $rowb = mysqli_fetch_row($resb);
 $sumb = $rowb[0];
+$cart = barang("SELECT b.nama, c.qty, b.image, b.harga, b.id, b.stok FROM user AS u INNER JOIN cart AS c ON c.user_id=u.id INNER JOIN barang AS b ON b.id=c.id_produk WHERE u.id='$uid'");
 if (isset($_POST["submit"])) {
     if (tambahongkir($_POST) > 0 & tambahpembelian($_POST) > 0) {
         echo "<script>alert('data berhasil ditambahkan');
@@ -140,6 +141,20 @@ if (isset($_POST["submit"])) {
                                     <div class="col-md-4 mb-3 halo">
                                         <input type="text" class="form-control" id="ekspedisi" placeholder="Estimasi" readonly name="estimasi">
                                     </div>
+                                    <?php
+                                    foreach ($cart as $data) :
+                                    ?>
+                                        <input type="hidden" value="<?= $data["id"] ?>" name="produk_id[]">
+                                        <input type="hidden" value="<?= $data["qty"] ?>" name="qty[]">
+                                    <?php
+                                    endforeach;
+                                    ?>
+                                    <?php
+                                    date_default_timezone_set('Asia/Jakarta');
+                                    $id_transaksi = date("dmyHis") . $uid;
+
+                                    ?>
+                                    <input type="hidden" name="idtransaksi" id="idtransaksi" value="<?= $id_transaksi ?>">
                                     <input type="hidden" name="total_berat" value="<?= $sumb ?>">
                                     <input type="hidden" name="provinsi">
                                     <input type="hidden" name="distrik">
