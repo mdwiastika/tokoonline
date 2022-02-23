@@ -7,13 +7,13 @@ $tgl = date("dmys");
 $transaksi = $tgl . $uid;
 $query = mysqli_query($connect, "SELECT o.user_id, p.total_pembelian, p.tanggal, o.nama_kota, o.tarif, o.estimasi, o.nama_lengkap, o.alamat, o.no_hp FROM pembelian AS p INNER JOIN ongkir AS o ON o.user_id=p.id_ongkir WHERE p.user_id=$uid");
 $nota = mysqli_fetch_assoc($query);
-$alamat = $nota["alamat"] . $nota["nama_kota"];
+$alamat = $nota["alamat"] . " " . $nota["nama_kota"];
 $cart = barang("SELECT b.nama, c.qty, b.image, b.harga, b.id, b.stok FROM user AS u INNER JOIN cart AS c ON c.user_id=u.id INNER JOIN barang AS b ON b.id=c.id_produk WHERE u.id='$uid'");
 $stok = barang("SELECT * FROM barang AS b INNER JOIN cart AS c ON b.id=c.id_produk WHERE c.user_id=$uid");
 
 if (isset($_POST["submit"])) {
     if (tambahbukti($_POST) > 0 & tambah($_POST) > 0) {
-        echo "<script>alert('Barang segera segera diantar');
+        echo "<script>alert('Barang segera diantar');
         document.location.href = 'cart.php';</script> ";
     } else {
         echo "<script>alert('data gagal ditambahkan');</script> ";
@@ -39,6 +39,7 @@ if (isset($_POST["submit"])) {
     <!-- Core Style CSS -->
     <link rel="stylesheet" href="css/core-style.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../admin/image.css">
 
 </head>
 
@@ -129,7 +130,7 @@ if (isset($_POST["submit"])) {
                                         <input type="file" class="form-control" id="gambar" name="image" autocomplete="off" onchange="readURL(this);" style="max-width: 150px;">
                                         <img id="blah" src="http://placehold.it/180" alt="your image" />
                                     </div>
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-12 mb-3">
                                         <img src="../qrcode.jpeg" alt="" style="max-width: 100px; display: inline-block;">
                                     </div>
                                     <button type="submit" class="amado-btn" name="submit" style="display: inline-block;">Submit</button>
