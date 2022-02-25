@@ -229,7 +229,6 @@ if (isset($_POST["cari"])) {
                                                 <td><span class="tag tag-success"><?= $data["status"] ?></span></td>
                                                 <td>
                                                     <div class="btn-group"><a class="btn btn-primary mr-1" href="ubahdatabeli.php?id_pembayaran=<?= $data["id_pembayaran"]; ?>" role="button"><i class="fas fa-edit"></i></a>
-                                                        <a class="btn btn-danger " href="hapusbeli.php?id_pembayaran=<?= $data["id_pembayaran"]; ?>" role="button" onclick="return confirm('Yakin ingin menghapus?')"><i class="far fa-trash-alt"></i></a>
                                                     </div>
                                                 </td>
                                             </tr>

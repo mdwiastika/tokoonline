@@ -3,7 +3,7 @@ session_start();
 include_once "connect.php";
 include_once "fbeli.php";
 $uid = $_SESSION["uid"];
-$cart = barang("SELECT p.id_transaksi, b.tanggal_bayar, b.uid_bukti, p.total, b.status, p.id_barang, g.nama FROM pembelian AS p INNER JOIN buktipembayaran AS b ON b.id_transaksi=p.id_transaksi INNER JOIN barang as g ON g.id=p.id_barang WHERE b.uid_bukti=$uid");
+$cart = barang("SELECT p.id_transaksi, b.tanggal_bayar, b.uid_bukti, p.total, b.status, p.id_barang, g.nama,b.id_pembayaran FROM pembelian AS p INNER JOIN buktipembayaran AS b ON b.id_transaksi=p.id_transaksi INNER JOIN barang as g ON g.id=p.id_barang WHERE b.uid_bukti=$uid");
 $history = barang("SELECT * FROM buktipembayaran WHERE uid_bukti=$uid");
 $dsn = '';
 $harga = '';
@@ -67,14 +67,13 @@ $harga = '';
                 <div class="row">
                     <div class="col-12">
                         <div class="container card shadow overflow-hidden p-5 m-auto" style="width: 100%;">
-
                             <table class="table">
                                 <thead class="thead-light">
                                     <tr>
                                         <th scope="col">No</th>
                                         <th scope="col">ID Transaksi</th>
-                                        <th scope="col">Total</th>
                                         <th scope="col">Status</th>
+                                        <th scope="col">Action</th>
                                         <th scope="col">Barang</th>
                                     </tr>
                                 </thead>
@@ -92,14 +91,16 @@ $harga = '';
                                             ?>
                                                 <th scope="row"><?= $a ?></th>
                                                 <td><?= $data["id_transaksi"] ?></td>
-                                                <td>Rp <?= number_format($data["total"], 0, "", ".")  ?></td>
                                                 <td><?= $data["status"] ?></td>
+                                                <td><a class="amado-btn-group mr-1" href="ubahdatabeli.php?id_pembayaran=<?= $data["id_pembayaran"]; ?>" role="button" onclick="return confirm('Yakin barang sudah diterima?')"><i class="fa fa-edit"></i></a>
+                                                    <a class="amado-btn-group mr-1" href="hapusdatabeli.php?id_pembayaran=<?= $data["id_pembayaran"]; ?>" role="button" onclick="return confirm('Yakin ingin menghapus history?')"><i class="fa fa-trash"></i></a>
+                                                </td>
                                             <?php
                                             } else {
                                                 $a--;
                                             ?>
                                                 <th></th>
-                                                <td> </td>
+                                                <td></td>
                                                 <td></td>
                                                 <td></td>
                                             <?php };

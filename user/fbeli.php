@@ -26,3 +26,12 @@ function tambahsold($data)
     }
     return mysqli_affected_rows($connect);
 }
+function ubah($data)
+{
+    $id = $_GET["id_pembayaran"];
+    global $connect;
+    $status = "Barang Diterima";
+    $query = "UPDATE buktipembayaran SET status='$status' WHERE id_pembayaran= '$id'";
+    mysqli_query($connect, $query);
+    return mysqli_affected_rows($connect);
+}
