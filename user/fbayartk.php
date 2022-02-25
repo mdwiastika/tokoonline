@@ -18,7 +18,7 @@ function tambahbukti($data)
     $gambar = upload();
     $produk = $data["produk"];
     $id_transaksi = $data["idtransaksi"];
-    $query2 = "UPDATE buktipembayaran SET gambar= '$gambar' WHERE id_transaksi=$id_transaksi";
+    $query2 = "UPDATE buktipembayaran SET gambar= '$gambar' WHERE id_transaksi=$id_transaksi AND uid_bukti=$userid";
     mysqli_query($connect, $query2);
     return mysqli_affected_rows($connect);
 }

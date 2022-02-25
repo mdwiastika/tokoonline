@@ -45,7 +45,7 @@ function tambahpembelian($data)
         $query = "INSERT INTO pembelian VALUES ('','$uid','$id_transaksi','$idbarang[$x]','$tanggal','$total','$tarif','$qty[$x]','$status','$alamat')";
         mysqli_query($connect, $query);
     }
-    $query2 = "INSERT INTO buktipembayaran VALUES ('','','$tanggal','$id_transaksi')";
+    $query2 = "INSERT INTO buktipembayaran VALUES ('','','$tanggal','$id_transaksi','$uid','$status')";
     mysqli_query($connect, $query2);
     return mysqli_affected_rows($connect);
 }
