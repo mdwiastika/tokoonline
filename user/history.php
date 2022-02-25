@@ -3,8 +3,10 @@ session_start();
 include_once "connect.php";
 include_once "fbeli.php";
 $uid = $_SESSION["uid"];
-$cart = barang("SELECT b.id_transaksi, b.tanggal_bayar, b.uid_bukti, p.total, b.status, p.id_barang, g.nama FROM pembelian AS p INNER JOIN buktipembayaran AS b ON b.id_transaksi=p.id_transaksi INNER JOIN barang as g ON g.id=p.id_barang WHERE b.uid_bukti=$uid");
+$cart = barang("SELECT p.id_transaksi, b.tanggal_bayar, b.uid_bukti, p.total, b.status, p.id_barang, g.nama FROM pembelian AS p INNER JOIN buktipembayaran AS b ON b.id_transaksi=p.id_transaksi INNER JOIN barang as g ON g.id=p.id_barang WHERE b.uid_bukti=$uid");
 $history = barang("SELECT * FROM buktipembayaran WHERE uid_bukti=$uid");
+$dsn = '';
+$harga = '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -70,7 +72,6 @@ $history = barang("SELECT * FROM buktipembayaran WHERE uid_bukti=$uid");
                                 <thead class="thead-light">
                                     <tr>
                                         <th scope="col">No</th>
-                                        <th scope="col">Tanggal</th>
                                         <th scope="col">ID Transaksi</th>
                                         <th scope="col">Total</th>
                                         <th scope="col">Status</th>
@@ -86,11 +87,24 @@ $history = barang("SELECT * FROM buktipembayaran WHERE uid_bukti=$uid");
                                     ?>
                                         <tr>
                                             <input type="hidden" value="<?= $data["id_transaksi"] ?>">
-                                            <th scope="row"><?= $a ?></th>
-                                            <td><?= $data["tanggal_bayar"] ?></td>
-                                            <td><?= $data["id_transaksi"] ?></td>
-                                            <td>Rp <?= number_format($data["total"], 0, "", ".")  ?></td>
-                                            <td><?= $data["status"] ?></td>
+                                            <?php
+                                            if ($dsn != $data['id_transaksi']) {
+                                            ?>
+                                                <th scope="row"><?= $a ?></th>
+                                                <td><?= $data["id_transaksi"] ?></td>
+                                                <td>Rp <?= number_format($data["total"], 0, "", ".")  ?></td>
+                                                <td><?= $data["status"] ?></td>
+                                            <?php
+                                            } else {
+                                                $a--;
+                                            ?>
+                                                <th></th>
+                                                <td> </td>
+                                                <td></td>
+                                                <td></td>
+                                            <?php };
+                                            $dsn = $data['id_transaksi'];
+                                            ?>
                                             <td><?= $data["nama"] ?></td>
                                         </tr>
                                         <?php
