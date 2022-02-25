@@ -17,9 +17,12 @@ function tambahbukti($data)
     $userid = htmlspecialchars($data["userid"]);
     $gambar = upload();
     $produk = $data["produk"];
+    $status = "pengemasan";
     $id_transaksi = $data["idtransaksi"];
     $query2 = "UPDATE buktipembayaran SET gambar= '$gambar' WHERE id_transaksi=$id_transaksi AND uid_bukti=$userid";
+    $query3 = "UPDATE buktipembayaran SET status= '$status'WHERE id_transaksi=$id_transaksi AND uid_bukti=$userid";
     mysqli_query($connect, $query2);
+    mysqli_query($connect, $query3);
     return mysqli_affected_rows($connect);
 }
 function upload()

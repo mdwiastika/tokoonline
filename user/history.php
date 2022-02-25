@@ -3,23 +3,8 @@ session_start();
 include_once "connect.php";
 include_once "fbeli.php";
 $uid = $_SESSION["uid"];
-$query = mysqli_query($connect, "SELECT o.user_id, p.total, p.tanggal, o.nama_kota, o.tarif, o.estimasi, o.nama_lengkap, o.alamat, o.no_hp, p.ongkir FROM pembelian AS p INNER JOIN ongkir AS o ON o.user_id=p.id_ongkir WHERE p.user_id=$uid");
-$nota = mysqli_fetch_assoc($query);
-
-$cart = barang("SELECT * FROM buktipembayaran AS b INNER JOIN pembelian AS p ON b.iduser=p.user_id WHERE b.iduser='$uid'");
-$query1 = mysqli_query($connect, "SELECT * FROM buktipembayaran WHERE iduser='$uid'");
-$ongkir = mysqli_fetch_assoc($query1);
-$tt = date("dmys");
-$id_transaksi = $tt . $uid;
-if (isset($_POST["submit"])) {
-    if (tambahsold($_POST) > 0) {
-        echo "<script>alert('data berhasil ditambahkan');
-        document.location.href = 'formbayar.php';</script> 
-        ";
-    } else {
-        echo "<script>alert('data gagal ditambahkan');</script> ";
-    }
-}
+$cart = barang("SELECT b.id_transaksi, b.tanggal_bayar, b.uid_bukti, p.total, b.status, p.id_barang, g.nama FROM pembelian AS p INNER JOIN buktipembayaran AS b ON b.id_transaksi=p.id_transaksi INNER JOIN barang as g ON g.id=p.id_barang WHERE b.uid_bukti=$uid");
+$history = barang("SELECT * FROM buktipembayaran WHERE uid_bukti=$uid");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -85,26 +70,28 @@ if (isset($_POST["submit"])) {
                                 <thead class="thead-light">
                                     <tr>
                                         <th scope="col">No</th>
-                                        <th scope="col">Biaya</th>
                                         <th scope="col">Tanggal</th>
+                                        <th scope="col">ID Transaksi</th>
+                                        <th scope="col">Total</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Barang</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
+                                    $a = 1;
+                                    ?>
+                                    <?php
                                     foreach ($cart as $data) :
                                     ?>
-                                        <?php
-                                        $a = 1;
-                                        ?>
                                         <tr>
+                                            <input type="hidden" value="<?= $data["id_transaksi"] ?>">
                                             <th scope="row"><?= $a ?></th>
-                                            <td>
-                                                <?php
-                                                $query = "SELECT nama FROM "
-                                                ?>
-                                            </td>
-                                            <td>Rp <?= number_format($data["total"]);  ?></td>
-                                            <td><?= $data["tanggal"] ?></td>
+                                            <td><?= $data["tanggal_bayar"] ?></td>
+                                            <td><?= $data["id_transaksi"] ?></td>
+                                            <td>Rp <?= number_format($data["total"], 0, "", ".")  ?></td>
+                                            <td><?= $data["status"] ?></td>
+                                            <td><?= $data["nama"] ?></td>
                                         </tr>
                                         <?php
                                         $a++;
@@ -112,6 +99,7 @@ if (isset($_POST["submit"])) {
                                     <?php
                                     endforeach;
                                     ?>
+
                                 </tbody>
                             </table>
                         </div>
