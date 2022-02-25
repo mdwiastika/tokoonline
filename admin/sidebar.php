@@ -81,8 +81,16 @@
                     </a>
                 </li>
                 <li class="nav-item active">
+                    <a href="datapembelian.php" class="nav-link">
+                        <i class="nav-icon fas fa-clipboard-list"></i>
+                        <p>
+                            Daftar Pembelian
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item active">
                     <a href="registrasi.php" class="nav-link">
-                        <i class="nav-icon fas fa-tags"></i>
+                        <i class="nav-icon fas fa-user-plus"></i>
                         <p>
                             Registrasi
                         </p>
@@ -90,7 +98,7 @@
                 </li>
                 <li class="nav-item active">
                     <a href="logout.php" class="nav-link">
-                        <i class="nav-icon fas fa-tags"></i>
+                        <i class="nav-icon fas fa-sign-out-alt"></i>
                         <p>
                             Log Out
                         </p>
