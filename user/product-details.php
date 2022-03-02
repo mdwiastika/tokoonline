@@ -4,11 +4,6 @@ include_once "fdatatk.php";
 include_once "connect.php";
 $id = $_GET['id'];
 $ubah = barang("SELECT * FROM barang WHERE id = $id")[0];
-if (isset($_POST['simpan'])) {
-    $uID = $connect->real_escape_string($_POST['uID']);
-    $ratedIndex = $connect->real_escape_string($_POST['ratedIndex']);
-    $ratedIndex++;
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -182,7 +177,7 @@ if (isset($_POST['simpan'])) {
     <!-- ##### Footer Area End ##### -->
 
     <!-- ##### jQuery (Necessary for All JavaScript Plugins) ##### -->
-    <script src="js/jquery/jquery-2.2.4.min.js"></script>
+    <script src="http://code.jquery.com/jquery-3.4.0.min.js" integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
     <!-- Popper js -->
     <script src="js/popper.min.js"></script>
     <!-- Bootstrap js -->
@@ -191,58 +186,7 @@ if (isset($_POST['simpan'])) {
     <script src="js/plugins.js"></script>
     <!-- Active js -->
     <script src="js/active.js"></script>
-    <script>
-        var ratedIndex = -1,
-            uID = 0;
-        $(document).ready(function() {
-            resetStarColors();
-            if (localStorage.getItem('ratedIndex') != null)
-                setStar(parseInt(localStorage.getItem('ratedIndex')));
-            $('.fa-star').on('click', function() {
-                ratedIndex = parseInt($(this).data('index'));
-                localStorage.setItem('ratedIndex', ratedIndex);
-                simpanrating();
-            });
-            $('.fa-star').mouseover(function() {
-                resetStarColors();
-                var currentindex = parseInt($(this).data('index'));
-                setStar(currentindex);
-                for (var i = 0; i <= currentindex; i++)
-                    $('.fa-star:eq(' + i + ')').css('color', 'yellow');
-            });
-            $('.fa-star').mouseleave(function() {
-                resetStarColors();
-                if (ratedIndex != -1) {
-                    setStar(ratedIndex);
-                }
-            });
-        });
 
-        function simpanrating() {
-            $.ajax({
-                url: "product_details.php",
-                method: "POST",
-                dataType: "json",
-                data: {
-                    save: 1,
-                    uID: uID,
-                    ratedIndex: ratedIndex
-                },
-                success: function(r) {
-                    uID = r.uid;
-                }
-            });
-        };
-
-        function setStar(max) {
-            for (var i = 0; i <= max; i++)
-                $('.fa-star:eq(' + i + ')').css('color', 'yellow');
-        };
-
-        function resetStarColors() {
-            $('.fa-star').css('color', 'thistle');
-        }
-    </script>
 </body>
 
 </html>

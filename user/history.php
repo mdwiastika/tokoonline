@@ -3,9 +3,8 @@ session_start();
 include_once "connect.php";
 include_once "fbeli.php";
 $uid = $_SESSION["uid"];
-$cart = barang("SELECT p.id_transaksi, b.tanggal_bayar, b.uid_bukti, p.total, b.status, p.id_barang, g.nama,b.id_pembayaran FROM pembelian AS p INNER JOIN buktipembayaran AS b ON b.id_transaksi=p.id_transaksi INNER JOIN barang as g ON g.id=p.id_barang WHERE b.uid_bukti=$uid");
+$cart = barang("SELECT p.id_transaksi, b.tanggal_bayar, b.uid_bukti, p.total, b.status, p.id_barang, g.nama,b.id_pembayaran FROM pembelian AS p INNER JOIN buktipembayaran AS b ON b.id_transaksi=p.id_transaksi INNER JOIN barang as g ON g.id=p.id_barang WHERE b.uid_bukti=$uid GROUP BY b.id_transaksi");
 $history = barang("SELECT * FROM buktipembayaran WHERE uid_bukti=$uid");
-$dsn = '';
 $harga = '';
 ?>
 <!DOCTYPE html>
@@ -84,29 +83,31 @@ $harga = '';
                                     <?php
                                     foreach ($cart as $data) :
                                     ?>
+                                        <?php
+                                        $transaksisaya = $data["id_transaksi"];
+                                        $datasaya = barang("SELECT b.nama, b.id FROM barang AS b INNER JOIN pembelian AS p ON b.id=p.id_barang WHERE p.id_transaksi= '$transaksisaya'")
+                                        ?>
                                         <tr>
                                             <input type="hidden" value="<?= $data["id_transaksi"] ?>">
-                                            <?php
-                                            if ($dsn != $data['id_transaksi']) {
-                                            ?>
-                                                <th scope="row"><?= $a ?></th>
-                                                <td><?= $data["id_transaksi"] ?></td>
-                                                <td><?= $data["status"] ?></td>
-                                                <td><a class="amado-btn-group mr-1" href="ubahdatabeli.php?id_pembayaran=<?= $data["id_pembayaran"]; ?>" role="button" onclick="return confirm('Yakin barang sudah diterima?')"><i class="fa fa-edit"></i></a>
-                                                    <a class="amado-btn-group mr-1" href="hapusdatabeli.php?id_pembayaran=<?= $data["id_pembayaran"]; ?>" role="button" onclick="return confirm('Yakin ingin menghapus history?')"><i class="fa fa-trash"></i></a>
-                                                </td>
-                                            <?php
-                                            } else {
-                                                $a--;
-                                            ?>
-                                                <th></th>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            <?php };
-                                            $dsn = $data['id_transaksi'];
-                                            ?>
-                                            <td><?= $data["nama"] ?></td>
+                                            <th scope="row"><?= $a ?></th>
+                                            <td><?= $data["id_transaksi"] ?></td>
+                                            <td><?= $data["status"] ?></td>
+                                            <td><a class="amado-btn-group mr-1" href="ubahdatabeli.php?id_pembayaran=<?= $data["id_pembayaran"]; ?>" role="button" onclick="return confirm('Yakin barang sudah diterima?')"><i class="fa fa-edit"></i></a>
+                                                <a class="amado-btn-group mr-1" href="hapusdatabeli.php?id_pembayaran=<?= $data["id_pembayaran"]; ?>" role="button" onclick="return confirm('Yakin ingin menghapus history?')"><i class="fa fa-trash"></i></a>
+                                            </td>
+                                            <td>
+
+                                                <ul><?php
+                                                    foreach ($datasaya as $hiii) :
+                                                    ?>
+                                                        <li><a href="product-details.php?id=<?= $hiii["id"] ?>" style="font-size: medium;"><?= $hiii["nama"] . " "; ?></a></li>
+                                                    <?php
+                                                    endforeach;
+                                                    ?>
+                                                </ul>
+
+                                            </td>
+
                                         </tr>
                                         <?php
                                         $a++;
