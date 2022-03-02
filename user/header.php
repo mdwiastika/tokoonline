@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
 <?php
 include_once "connect.php";
 $uid = $_SESSION["uid"];
@@ -33,10 +34,10 @@ $jumlah_barang = mysqli_num_rows($data_barang);
     </div> -->
     <!-- Cart Menu -->
     <div class="cart-fav-search mb-100">
-        <a href="cart.php" class="cart-nav" style="letter-spacing: 1px;"><img src="img/core-img/cart.png" alt=""> Keranjang (<span><?= $jumlah_barang; ?></span>)</a>
-        <a href="#" class="fav-nav" style="letter-spacing: 1px;"><img src="img/core-img/favorites.png" alt=""> Favorit</a>
-        <a href="#" class="search-nav" style="letter-spacing: 1px;"><img src="img/core-img/search.png" alt=""> Cari</a>
-        <a href="logout.php" style="letter-spacing: 1px;"><img style="margin-bottom: 5px;" src="img/core-img/logout2.png" alt=""> Log Out</a>
+        <a href="cart.php" class="cart-nav" style="letter-spacing: 1px;"><i class="fa-solid fa-cart-shopping" style="opacity: .4;"></i> Keranjang (<span><?= $jumlah_barang; ?></span>)</a>
+        <a href="history.php" class="fav-nav" style="letter-spacing: 1px;"><i class="fa-solid fa-clock-rotate-left" style="opacity: .4;"></i> History</a>
+        <a href="#" class="search-nav" style="letter-spacing: 1px;"><i class="fa-solid fa-magnifying-glass" style="opacity: .4;"></i> Cari</a>
+        <a href="logout.php" style="letter-spacing: 1px;"><i class="fa-solid fa-right-from-bracket" style="opacity: .4;"></i> Log Out</a>
     </div>
     <!-- Social Button -->
     <div class="social-info d-flex justify-content-between">

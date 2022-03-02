@@ -4,6 +4,11 @@ include_once "fdatatk.php";
 include_once "connect.php";
 $id = $_GET['id'];
 $ubah = barang("SELECT * FROM barang WHERE id = $id")[0];
+if (isset($_POST['simpan'])) {
+    $uID = $connect->real_escape_string($_POST['uID']);
+    $ratedIndex = $connect->real_escape_string($_POST['ratedIndex']);
+    $ratedIndex++;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -109,11 +114,11 @@ $ubah = barang("SELECT * FROM barang WHERE id = $id")[0];
                                 <!-- Ratings & Review -->
                                 <div class="ratings-review mb-15 d-flex align-items-center justify-content-between">
                                     <div class="ratings">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true" data-index="0"></i>
+                                        <i class="fa fa-star" aria-hidden="true" data-index="1"></i>
+                                        <i class="fa fa-star" aria-hidden="true" data-index="2"></i>
+                                        <i class="fa fa-star" aria-hidden="true" data-index="3"></i>
+                                        <i class="fa fa-star" aria-hidden="true" data-index="4"></i>
                                     </div>
                                     <div class="review">
                                         <a href="#">Write A Review</a>
@@ -186,7 +191,58 @@ $ubah = barang("SELECT * FROM barang WHERE id = $id")[0];
     <script src="js/plugins.js"></script>
     <!-- Active js -->
     <script src="js/active.js"></script>
+    <script>
+        var ratedIndex = -1,
+            uID = 0;
+        $(document).ready(function() {
+            resetStarColors();
+            if (localStorage.getItem('ratedIndex') != null)
+                setStar(parseInt(localStorage.getItem('ratedIndex')));
+            $('.fa-star').on('click', function() {
+                ratedIndex = parseInt($(this).data('index'));
+                localStorage.setItem('ratedIndex', ratedIndex);
+                simpanrating();
+            });
+            $('.fa-star').mouseover(function() {
+                resetStarColors();
+                var currentindex = parseInt($(this).data('index'));
+                setStar(currentindex);
+                for (var i = 0; i <= currentindex; i++)
+                    $('.fa-star:eq(' + i + ')').css('color', 'yellow');
+            });
+            $('.fa-star').mouseleave(function() {
+                resetStarColors();
+                if (ratedIndex != -1) {
+                    setStar(ratedIndex);
+                }
+            });
+        });
 
+        function simpanrating() {
+            $.ajax({
+                url: "product_details.php",
+                method: "POST",
+                dataType: "json",
+                data: {
+                    save: 1,
+                    uID: uID,
+                    ratedIndex: ratedIndex
+                },
+                success: function(r) {
+                    uID = r.uid;
+                }
+            });
+        };
+
+        function setStar(max) {
+            for (var i = 0; i <= max; i++)
+                $('.fa-star:eq(' + i + ')').css('color', 'yellow');
+        };
+
+        function resetStarColors() {
+            $('.fa-star').css('color', 'thistle');
+        }
+    </script>
 </body>
 
 </html>

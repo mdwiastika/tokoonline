@@ -87,13 +87,53 @@ if (isset($_POST["submit"])) {
                 <div class="row">
                     <div class="col-12 col-lg-8">
                         <div class="checkout_details_area mt-50 clearfix">
-
-                            <div class="cart-title">
+                            <table class="table">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">No</th>
+                                        <th scope="col">Nama</th>
+                                        <th scope="col">Jumlah</th>
+                                        <th scope="col">Sub Harga</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $a = 1;
+                                    ?>
+                                    <?php
+                                    foreach ($cart as $data) :
+                                    ?>
+                                        <?php
+                                        $total = $data["qty"] * $data["harga"];
+                                        ?>
+                                        <tr>
+                                            <input type="hidden" value="<?= $uid ?>" name="userid">
+                                            <input type="hidden" value="proses" name="status">
+                                            <input type="hidden" value="<?= $id_transaksi ?>" name="transaksi">
+                                            <input type="hidden" value="<?= $data["nama"] ?>" name="produk[]">
+                                            <input type="hidden" value="<?= $data["qty"] ?>" name="stokdibeli[]">
+                                            <td><?= $a ?></td>
+                                            <td><?= $data["nama"] ?></td>
+                                            <td><?= $data["qty"] ?></td>
+                                            <td>Rp <?= number_format($total); ?></td>
+                                        </tr>
+                                        <?php
+                                        $a++;
+                                        ?>
+                                    <?php
+                                    endforeach;
+                                    ?>
+                                </tbody>
+                            </table>
+                            <div class=" cart-title">
                                 <h2>Formulir</h2>
                             </div>
 
                             <form method="POST">
                                 <div class="row">
+                                    <div class="col-md-12">
+
+                                    </div>
                                     <div class="col-md-6 mb-3">
                                         <input type="text" class="form-control" id="first_name" value="" placeholder="Nama Lengkap" required name="namalengkap">
                                     </div>

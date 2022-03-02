@@ -3,11 +3,9 @@ session_start();
 include_once "connect.php";
 include_once "fbeli.php";
 $uid = $_SESSION["uid"];
-$query = mysqli_query($connect, "SELECT o.user_id, p.total, p.tanggal, o.nama_kota, o.tarif, o.estimasi, o.nama_lengkap, o.alamat, o.no_hp FROM pembelian AS p INNER JOIN ongkir AS o ON o.uid=p.user_id WHERE p.user_id=$uid");
+$query = mysqli_query($connect, "SELECT o.user_id, p.total, p.tanggal, o.nama_kota, o.tarif, o.estimasi, o.nama_lengkap, o.alamat, o.no_hp, o.id_transaksi FROM pembelian AS p INNER JOIN ongkir AS o ON o.uid=p.user_id WHERE p.user_id=$uid");
 $nota = mysqli_fetch_assoc($query);
 $cart = barang("SELECT b.nama, c.qty, b.image, b.harga, c.id, b.stok FROM user AS u INNER JOIN cart AS c ON c.user_id=u.id INNER JOIN barang AS b ON b.id=c.id_produk WHERE u.id='$uid'");
-$tt = date("dmys");
-$id_transaksi = $tt . $uid;
 if (isset($_POST["submit"])) {
     if (tambahsold($_POST) > 0) {
         echo "<script>alert('data berhasil ditambahkan');
@@ -17,6 +15,16 @@ if (isset($_POST["submit"])) {
         echo "<script>alert('data gagal ditambahkan');</script> ";
     }
 }
+if (isset($_POST["batal"])) {
+    if (batalbeli($_POST) > 0) {
+        echo "<script>alert('pembelian berhasil dibatalkan');
+        document.location.href = 'cart.php';</script> 
+        ";
+    } else {
+        echo "<script>alert('pembelian gagal dibatalkan');</script> ";
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -118,9 +126,9 @@ if (isset($_POST["submit"])) {
 
                                                 <input type="hidden" value="<?= $uid ?>" name="userid">
                                                 <input type="hidden" value="proses" name="status">
-                                                <input type="hidden" value="<?= $id_transaksi ?>" name="transaksi">
                                                 <input type="hidden" value="<?= $data["nama"] ?>" name="produk[]">
                                                 <input type="hidden" value="<?= $data["qty"] ?>" name="stokdibeli[]">
+                                                <input type="hidden" value="<?= $nota["id_transaksi"] ?>" name="transaksi">
                                                 <td><?= $data["nama"] ?></td>
                                                 <td><?= $data["qty"] ?></td>
                                                 <td>Rp <?= number_format($total); ?></td>
@@ -136,10 +144,12 @@ if (isset($_POST["submit"])) {
                                             <th>Rp <?= number_format($nota["tarif"]);  ?></th>
                                         </tr>
                                         <tr>
-                                            <td colspan="4">
+                                            <td colspan="2">
+                                                <button type="batal" class="amado-btn active" name="batal">Batalkan Pembelian</button>
+                                            </td>
+                                            <td colspan="2">
                                                 <button type="submit" class="amado-btn" name="submit">Submit</button>
                                             </td>
-
                                         </tr>
                                     </tbody>
                                 </table>

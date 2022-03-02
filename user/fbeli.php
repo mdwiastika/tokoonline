@@ -35,3 +35,16 @@ function ubah($data)
     mysqli_query($connect, $query);
     return mysqli_affected_rows($connect);
 }
+function batalbeli($data)
+{
+    global $connect;
+    $transaksi = htmlspecialchars($data["transaksi"]);
+    $userid = htmlspecialchars($data["userid"]);
+    $query3 = "DELETE FROM sold WHERE user_id= $userid";
+    mysqli_query($connect, $query3);
+    $query4 = "DELETE FROM ongkir WHERE uid= $userid";
+    mysqli_query($connect, $query4);
+    $query2 = "DELETE FROM buktipembayaran WHERE id_transaksi = $transaksi AND uid_bukti='$userid'";
+    mysqli_query($connect, $query2);
+    return mysqli_affected_rows($connect);
+}
